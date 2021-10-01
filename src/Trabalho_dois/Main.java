@@ -23,7 +23,7 @@ public class Main {
 	}
 	public static int[] subTabela(int[] tabela) {
 		int[] subtabela;
-		int termofinal=0, termoincial;
+		int sep=0, sep2=0, sepindex= 0, sepindex2= tabela.length-1;
 		boolean tabelaordenada = true;
 		
 		for(int i = 0; i<tabela.length; i++) {
@@ -34,8 +34,9 @@ public class Main {
 			//o proximo termo não é maior que o anterior
 			if(tabela[i] > tabela[i+1]) {
 				tabelaordenada = false;
-				termofinal = tabela[i+1];
-				System.out.println("Termofinal: "+termofinal);
+				sep = tabela[i+1];
+				sepindex= i;
+				System.out.println("sep: "+sep);
 			}
 		}
 		
@@ -44,17 +45,17 @@ public class Main {
 			return new int[]{};
 		}
 			
-		for(int i = 0; i<tabela.length; i++) {
+		for(int i = sepindex; i >=0; i--) {
 			
 			//ultimo termo
-			if(i+1==tabela.length) break; 
+			if(i-1==0) break; 
 			
-			if(termofinal > tabela[i+1]) {
-				termoincial = tabela[i+1];
-				System.out.println("TermoInicial: "+ termoincial);
+			if(tabela[i-1]> tabela[i]) { //não deve estar bem
+				sep2 = tabela[i-1];
+				System.out.println("sep2: "+ sep2);
 			}
 		}
-		return new int[]{1,23,213,123,12,32};
+		return new int[]{1,23,213,123,12,32}; //remover isto para a matriz correta
 
 		
 	}
