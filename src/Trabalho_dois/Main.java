@@ -23,7 +23,7 @@ public class Main {
 	}
 	public static int[] subTabela(int[] tabela) {
 		int[] subtabela;
-		int sep=0, sep2=0, sepindex= 0, sepindex2= tabela.length-1;
+		int sep=0, sepindex= 0, sepindex2= 0;
 		boolean tabelaordenada = true;
 		
 		for(int i = 0; i<tabela.length; i++) {
@@ -33,31 +33,40 @@ public class Main {
 			
 			//o proximo termo não é maior que o anterior
 			if(tabela[i] > tabela[i+1]) {
+				if(tabelaordenada == true) //é a primeira vez que estou a passar aqui porque estava true e vai passar a não estar.
+					sepindex2= i;
+				
+				
 				tabelaordenada = false;
-				sep = tabela[i+1];
-				sepindex= i;
-				System.out.println("sep: "+sep);
+				sepindex= i+1;
+				sep = tabela[sepindex];
+				System.out.printf("sep:%d\n",sep);
+			}
+			System.out.println("sepindex:"+sepindex+ ", sepindex2: "+sepindex2 + ", tabela[i]:"+tabela[i]);
+		}
+		
+		
+		//ver exceção no caso do utlimo numero desordenado seja antes da primeiro desordenado.
+		for(int i = 0; i<tabela.length; i++) {
+			
+			if(sep<tabela[i] && i<sepindex2) { //tentar ordenar termo desordenado desde o inicio da fila.
+				sepindex2 = i;
+				System.out.println("sepindex:"+sepindex+ "  sepindex2: "+sepindex2 + "   tabela[i]:"+tabela[i]);
+				break;
 			}
 		}
+		
 		
 		if(tabelaordenada) {
 			System.out.println("A tabela encontra-se ordenada. Não existe Sub-tabela.");
 			return new int[]{};
 		}
-			
-		for(int i = sepindex; i >=0; i--) {
-			
-			//ultimo termo
-			if(i-1==0) break; 
-			
-			if(tabela[i-1]> tabela[i]) { //não deve estar bem
-				sep2 = tabela[i-1];
-				System.out.println("sep2: "+ sep2);
-			}
-		}
-		return new int[]{1,23,213,123,12,32}; //remover isto para a matriz correta
-
 		
+		System.out.printf("Nr de valores: %d, Começo(sepindex2): %d, Fim(sepindex): %d\n",sepindex-sepindex2+1,sepindex2,sepindex);
+		subtabela = new int[sepindex-sepindex2+1]; 
+		System.arraycopy(tabela, sepindex2, subtabela, 0, sepindex-sepindex2+1);
+		
+		return subtabela; 
 	}
 	
 	public static int pedirtamanho(Scanner sc) {
