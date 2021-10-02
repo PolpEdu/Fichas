@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in); 
+		Scanner sc = new Scanner(System.in); //vou precisar do scanner em duas funÃ§Ãµes
 		
 		int tamanho = pedirtamanho(sc);
 		
 		int[] Tabela = new int[tamanho];
 		pedirelementos(Tabela, sc);
 		
-		sc.close(); //não vou precisar mais do scanner
+		sc.close(); //nï¿½o vou precisar mais do scanner
 		
 		
 		printTabela(Tabela,false);
@@ -31,40 +31,41 @@ public class Main {
 			//ultimo termo
 			if(i+1==tabela.length) break; 
 			
-			//o proximo termo não é maior que o anterior
+			//o proximo termo nï¿½o ï¿½ maior que o anterior, logo estÃ¡ desordenada nestes indexes
 			if(tabela[i] > tabela[i+1]) {
-				if(tabelaordenada == true) //é a primeira vez que estou a passar aqui porque estava true e vai passar a não estar.
+				if(tabelaordenada == true) //ï¿½ a primeira vez que estou a passar aqui porque estava true e vai passar a nï¿½o estar.
 					sepindex2= i;
 				
 				
 				tabelaordenada = false;
 				sepindex= i+1;
 				sep = tabela[sepindex];
-				System.out.printf("sep:%d\n",sep);
 			}
-			System.out.println("sepindex:"+sepindex+ ", sepindex2: "+sepindex2 + ", tabela[i]:"+tabela[i]);
 		}
+
+		if(tabelaordenada) { //nÃ£o quero fazer mais operaÃ§Ãµes. A tabela encontra-se ordernada.
+			System.out.println("A tabela encontra-se ordenada. Nï¿½o existe Sub-tabela.");
+			return new int[]{};
+		}
+
 		
 		
-		//ver exceção no caso do utlimo numero desordenado seja antes da primeiro desordenado.
+		//ver exceï¿½ï¿½o no caso do utlimo numero desordenado seja antes da primeiro desordenado.
 		for(int i = 0; i<tabela.length; i++) {
-			
-			if(sep<tabela[i] && i<sepindex2) { //tentar ordenar termo desordenado desde o inicio da fila.
+			//tentar ordenar termo
+			if(sep<tabela[i] && i<sepindex2) { //se conseguir ordenÃ¡-lo antes do index atual troca-o.
 				sepindex2 = i;
-				System.out.println("sepindex:"+sepindex+ "  sepindex2: "+sepindex2 + "   tabela[i]:"+tabela[i]);
+				//System.out.println("sepindex:"+sepindex+ "  sepindex2: "+sepindex2 + "   tabela[i]:"+tabela[i]);
 				break;
 			}
 		}
 		
 		
-		if(tabelaordenada) {
-			System.out.println("A tabela encontra-se ordenada. Não existe Sub-tabela.");
-			return new int[]{};
-		}
 		
-		System.out.printf("Nr de valores: %d, Começo(sepindex2): %d, Fim(sepindex): %d\n",sepindex-sepindex2+1,sepindex2,sepindex);
+		
+		//System.out.printf("Nr de valores: %d, Comeï¿½o(sepindex2): %d, Fim(sepindex): %d\n",sepindex-sepindex2+1,sepindex2,sepindex);
 		subtabela = new int[sepindex-sepindex2+1]; 
-		System.arraycopy(tabela, sepindex2, subtabela, 0, sepindex-sepindex2+1);
+		System.arraycopy(tabela, sepindex2, subtabela, 0, sepindex-sepindex2+1); //copiar para a nova tabela os elementos com os indexes.
 		
 		return subtabela; 
 	}
@@ -75,7 +76,7 @@ public class Main {
 		
 	
 		if(!(tamanho>2)) {
-			System.out.print("O tamanho tem de ser maior que dois.");
+			System.out.print("O tamanho da Tabela tem de ser maior que dois.");
 			System.exit(0); //sair com o exit code 0
 		}
 		return tamanho; 
@@ -93,11 +94,12 @@ public class Main {
 	}
 	
 	public static void printTabela(int[] t,boolean sub) {
-		if(sub) System.out.print("Sub-Tabela:\n{");
+		System.out.println();
+		if(sub) System.out.print("Sub-Tabela:\n{"); //sub, variavel que controla se Ã© a sub-tabela a ser passada como parametro.
 		else System.out.print("Tabela = {");
 		
 		for(int i = 0; i<t.length; i++) {
-			if(i==t.length-1) {
+			if(i==t.length-1) { //final
 				System.out.printf("%d",t[i]);
 				break;
 			}
