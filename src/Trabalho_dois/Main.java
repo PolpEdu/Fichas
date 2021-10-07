@@ -1,7 +1,8 @@
+
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TrabalhoDOIS {
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); //vou precisar do scanner em duas funções
 
@@ -82,7 +83,7 @@ public class TrabalhoDOIS {
     public static int[] pedirelementos(int[] tabela, Scanner sc) {
 
         for (int i = 0; i < tabela.length; i++) {
-            System.out.printf("Insire o elemento numero %d: ", i + 1);
+            System.out.printf("Insira o elemento numero %d: ", i + 1);
             int lido = sc.nextInt();
             tabela[i] = lido;
         }
@@ -98,6 +99,5 @@ public class TrabalhoDOIS {
         System.out.println(Arrays.toString(t));
 
     }
-
 
 }
