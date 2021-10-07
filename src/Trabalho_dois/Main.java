@@ -1,8 +1,8 @@
-package Trabalhodois;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Trabalhodois {
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); //vou precisar do scanner em duas funções
 
@@ -97,7 +97,8 @@ public class Trabalhodois {
         System.out.println();
         if(sub) System.out.print("Sub-Tabela:\n"); //sub, variavel que controla se é a sub-tabela a ser passada como parametro.
         else System.out.print("Tabela = ");
-        Arrays.toString(t);
+        System.out.println(Arrays.toString(t));
+
     }
 
 }
