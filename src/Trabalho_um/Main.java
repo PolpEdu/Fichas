@@ -1,3 +1,5 @@
+package Trabalho_um;
+
 import java.util.Scanner;
 
 public class Main {
@@ -15,7 +17,7 @@ public class Main {
 		int counter = 0;
 		for(; 0<n; n /= 10) {
 			lastdigit = (int) n%10; //resto do numero por 10, ou seja, o ultimo digito
-			if(alg==lastdigit) counter++; //contar da presença do numero (1-9) 
+			if(alg==lastdigit) counter++; //contar da presenï¿½a do numero (1-9) 
 		}
 		return counter;
 	}
@@ -23,7 +25,7 @@ public class Main {
 	public static boolean repetidos(long n) {
 		for(int al = 0; al<10;al++) {
 			//System.out.println("al:"+al+"c:"+ocorrencias(al,n));
-			if(ocorrencias(al,n)>=2) return true; //está mais que duas vezes, logo repete-se
+			if(ocorrencias(al,n)>=2) return true; //estï¿½ mais que duas vezes, logo repete-se
 		}
 		return false;
 	}
@@ -60,12 +62,12 @@ public class Main {
 	public static void main(String[] args) {
 		long n = pedir();
 		if(n<0) {
-			System.out.println("Número Inválido.");
+			System.out.println("Nï¿½mero Invï¿½lido.");
 			return;
 		}
 		
 		if (repetidos(n)) {
-			System.out.println("Número com algarismos repetidos.");
+			System.out.println("Nï¿½mero com algarismos repetidos.");
 		}
 		else {
 			desenha(n);
