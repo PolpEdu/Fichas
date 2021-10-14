@@ -62,6 +62,10 @@ class Data {
 
     public Data getDataDev() { return dataDevolucao();}
 }
+class Requesições {
+    ArrayList<Requesicao> req = new ArrayList<>();
+}
+
 
 class  Requesicao {
     private Leitor leitor;
