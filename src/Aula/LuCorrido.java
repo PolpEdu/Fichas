@@ -57,10 +57,10 @@ class Fracoes {
     }
 
     public void getdiv(long a ,long b) {
-        this.resultado = calcdiv(a,b);
+        this.resultado = resultado;//calcdiv(a,b);
     }
 
-    public String toString(){
+    /*public String toString(){
         return resultado;
-    }
+    }*/
 }
