@@ -6,7 +6,6 @@ import java.util.ArrayList;
 class Livro {
     private String titulo;
     private String nomeautor;
-    //private Requesicao requesicao;
 
     public Livro(String t, String autor) {
         this.titulo = t;
@@ -19,9 +18,9 @@ class Livro {
         }
     }
 
-    private String Livro(){return "Livro: \""+titulo+"\", por: "+nomeautor;}
+    private String PRTLivro(){return "Livro: \""+titulo+"\", por: "+nomeautor;}
 
-    public String toString(){return Livro();}
+    public String toString(){return PRTLivro();}
 }
 
 class Leitor {
@@ -39,9 +38,9 @@ class Leitor {
         }
     }
 
-    private String Leitor(){return "Leitor: "+nome+", "+nrutente;}
+    private String PRINTLeitor(){return "Leitor: "+nome+", "+nrutente;}
 
-    public String toString(){return Leitor();}
+    public String toString(){return PRINTLeitor();}
 }
 
 class Data {
@@ -54,12 +53,12 @@ class Data {
         //dá return por si mesmo
     }
 
-    private String Data() {
+    private String PRINTData() {
         return dia + "/" + mes + "/" + ano;
     }
 
     public String toString() {
-        return Data();
+        return PRINTData();
     }
 
 
@@ -72,10 +71,10 @@ class Data {
     }
 }
 
-class Requesições {
+class Requesicoes {
     private ArrayList<Requesicao> reqs;
 
-    public Requesições() {
+    public Requesicoes() {
         reqs = new ArrayList<>();
     }
 
@@ -116,24 +115,22 @@ class Requesicao {
         this.datarequesicao = dtreq;
     }
 
-    public static Requesicao requesitalivro(Leitor l, Livro liv,Data dtReq, Data dtDev) {
-        Requesicao req = new Requesicao(l, liv, dtReq, dtDev);
-
-        return  req;
+    public static Requesicao requesitaLivro(Leitor l, Livro liv,Data dtReq, Data dtDev) {
+        return new Requesicao(l, liv, dtReq, dtDev);
     }
 
     public boolean comparadatas(Data datagiven){
         return this.datarequesicao == datagiven;
     }
 
-    private String Requesicao(){return leitor+"\n"+livro+"\n"+"Data de Requesição: "+ datarequesicao+"\n"+"Data de Devolução: "+datadevolucao;}
+    private String PRINTRequesicao(){return leitor+"\n"+livro+"\n"+"Data de Requesição: "+ datarequesicao+"\n"+"Data de Devolução: "+datadevolucao;}
 
-    public String toString(){return Requesicao();}
+    public String toString(){return PRINTRequesicao();}
 }
 
 public class TrabalhoTres {
 
-    private static void criaLeitores(ArrayList leitores) {
+    private static void criaLeitores(ArrayList<Leitor> leitores) {
         Leitor l1 = new Leitor("Eduardo Nunes", 2020217675);
         Leitor l2 = new Leitor("Francisco Rosendo", 2020217697);
         Leitor l3 = new Leitor("Afonso Gouveia Melo", 2020217360);
@@ -144,7 +141,7 @@ public class TrabalhoTres {
         leitores.add(l4);
     }
 
-    private static void criaLivros(ArrayList livros) {
+    private static void criaLivros(ArrayList<Livro> livros) {
         Livro l1 = new Livro("Os Maias", "Eça de Queiroz");
         Livro l2 = new Livro("O Ano Da Morte De Ricardo Reis", "José Saramago");
         Livro l3 = new Livro("Sherlock Holmes: A Study in Scarlet", "Arthur Conan Doyle");
@@ -154,7 +151,7 @@ public class TrabalhoTres {
     }
 
     public static void main(String[] args) {
-        Requesições listareqs = new Requesições();
+        Requesicoes listareqs = new Requesicoes();
         ArrayList<Leitor> leitores = new ArrayList<>(); //crio uma lista de leitores.
         ArrayList<Livro> livros = new ArrayList<>();
 
@@ -179,9 +176,9 @@ public class TrabalhoTres {
 
 
         //cria requesições:
-        Requesicao r = Requesicao.requesitalivro(leitores.get(2), livros.get(2),d1, d1dev);
-        Requesicao r1 = Requesicao.requesitalivro(leitores.get(0), livros.get(1), now, nowdev);
-        Requesicao r2 = Requesicao.requesitalivro(leitores.get(1), livros.get(0), now, nowdev);
+        Requesicao r = Requesicao.requesitaLivro(leitores.get(2), livros.get(2),d1, d1dev);
+        Requesicao r1 = Requesicao.requesitaLivro(leitores.get(0), livros.get(1), now, nowdev);
+        Requesicao r2 = Requesicao.requesitaLivro(leitores.get(1), livros.get(0), now, nowdev);
 
         listareqs.adicionareq(r);
         listareqs.adicionareq(r1);
