@@ -85,6 +85,11 @@ class Requesicoes {
         }
     }
 
+    public void adicionareq(Requesicao r) {
+        reqs.add(r);
+    }
+
+
     public void listaRequisitados(Data d) {
         System.out.print("\nLista de datas correspondidas a "+d);
         for (Requesicao req : reqs) {
@@ -95,9 +100,7 @@ class Requesicoes {
         }
     }
 
-    public void adicionareq(Requesicao r) {
-        reqs.add(r);
-    }
+
 }
 
 
@@ -180,6 +183,7 @@ public class TrabalhoTres {
         Requesicao r1 = Requesicao.requesitaLivro(leitores.get(0), livros.get(1), now, nowdev);
         Requesicao r2 = Requesicao.requesitaLivro(leitores.get(1), livros.get(0), now, nowdev);
 
+        //adiciona às requesições
         listareqs.adicionareq(r);
         listareqs.adicionareq(r1);
         listareqs.adicionareq(r2);
