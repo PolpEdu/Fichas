@@ -18,6 +18,10 @@ class Livro {
         }
     }
 
+    public Requesicao requesitaLivro(Leitor l, Data dtReq, Data dtDev) {
+        return new Requesicao(l, this, dtReq, dtDev);
+    }
+
     private String PRTLivro(){return "Livro: \""+titulo+"\", por: "+nomeautor;}
 
     public String toString(){return PRTLivro();}
@@ -37,6 +41,7 @@ class Leitor {
             System.out.println(i);
         }
     }
+
 
     private String PRINTLeitor(){return "Leitor: "+nome+", "+nrutente;}
 
@@ -111,16 +116,13 @@ class Requesicao {
     private Data datadevolucao;
 
 
-    private Requesicao(Leitor l, Livro liv, Data dtreq, Data dtdev) {
+    public Requesicao(Leitor l, Livro liv, Data dtreq, Data dtdev) {
         this.leitor = l;
         this.livro = liv;
         this.datadevolucao = dtdev;
         this.datarequesicao = dtreq;
     }
 
-    public static Requesicao requesitaLivro(Leitor l, Livro liv,Data dtReq, Data dtDev) {
-        return new Requesicao(l, liv, dtReq, dtDev);
-    }
 
     public boolean comparadatas(Data datagiven){
         return this.datarequesicao == datagiven;
@@ -179,9 +181,9 @@ public class TrabalhoTres {
 
 
         //cria requesições:
-        Requesicao r = Requesicao.requesitaLivro(leitores.get(2), livros.get(2),d1, d1dev);
-        Requesicao r1 = Requesicao.requesitaLivro(leitores.get(0), livros.get(1), now, nowdev);
-        Requesicao r2 = Requesicao.requesitaLivro(leitores.get(1), livros.get(0), now, nowdev);
+        Requesicao r = livros.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
+        Requesicao r1 = livros.get(1).requesitaLivro(leitores.get(0), now, nowdev);
+        Requesicao r2 =  livros.get(0).requesitaLivro(leitores.get(1), now, nowdev);
 
         //adiciona às requesições
         listareqs.adicionareq(r);
