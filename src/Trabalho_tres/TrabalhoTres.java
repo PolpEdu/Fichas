@@ -13,6 +13,8 @@ class Livro {
     }
 
     public static void listaLivrosDisponiveis(ArrayList<Livro> livros) { //getLivros
+        if (livros.isEmpty()) System.out.println("\nNão existem livros disponiveis.");
+        System.out.println("Livros Disponveis:");
         for (Livro i : livros) {
             System.out.println(i);
         }
@@ -68,13 +70,17 @@ class Data {
 
 
     private Data dataDevolucao() {
+        //logica do calculo da dataDevolução:
         return new Data(this.dia, (this.mes + 1) % 12, this.ano); //A data de devolucao é dada por o mes atual mais um.
     }
 
     public Data getDataDev() {
         return dataDevolucao();
     }
+
 }
+
+
 
 class Requesicoes {
     private ArrayList<Requesicao> reqs;
@@ -90,22 +96,33 @@ class Requesicoes {
         }
     }
 
-    public void adicionareq(Requesicao r) {
+    public void adicionareq(Requesicao r, ArrayList<Livro> livrosdisponiveis) {
+        //verificar se posso requesitar o livro pretendido (ver se ele já está requesitado)
         reqs.add(r);
+        //ja nao é disponivel
+        livrosdisponiveis.remove(r.getLivro());
     }
 
 
     public void listaRequisitados(Data d) {
-        System.out.print("\nLista de datas correspondidas a "+d);
+        System.out.print("\n---------------------\nLista de datas correspondidas a "+d);
         for (Requesicao req : reqs) {
             if(req.comparadatas(d)) {
                 System.out.println("\n");
                 System.out.println(req);
             }
         }
+        System.out.println();
     }
 
+    public void levantaLivro(Requesicao r,ArrayList<Livro> livrosdisponiveis) {
+        if(reqs.contains(r))  {
+            reqs.remove(r);
+            System.out.println("Levantei o livro "+r.getLivro()+"\n");
 
+        };
+        livrosdisponiveis.add(r.getLivro());
+    }
 }
 
 
@@ -128,9 +145,13 @@ class Requesicao {
         return this.datarequesicao == datagiven;
     }
 
+    public String toString(){return PRINTRequesicao();}
+
+    public Livro getLivro(){return this.livro;}
+
     private String PRINTRequesicao(){return leitor+"\n"+livro+"\n"+"Data de Requesição: "+ datarequesicao+"\n"+"Data de Devolução: "+datadevolucao;}
 
-    public String toString(){return PRINTRequesicao();}
+
 }
 
 public class TrabalhoTres {
@@ -150,24 +171,27 @@ public class TrabalhoTres {
         Livro l1 = new Livro("Os Maias", "Eça de Queiroz");
         Livro l2 = new Livro("O Ano Da Morte De Ricardo Reis", "José Saramago");
         Livro l3 = new Livro("Sherlock Holmes: A Study in Scarlet", "Arthur Conan Doyle");
+        Livro l4 = new Livro("Engenharia de Janelas", "João Barata");
+
         livros.add(l1);
         livros.add(l2);
         livros.add(l3);
+        livros.add(l4);
     }
 
     public static void main(String[] args) {
         Requesicoes listareqs = new Requesicoes();
         ArrayList<Leitor> leitores = new ArrayList<>(); //crio uma lista de leitores.
-        ArrayList<Livro> livros = new ArrayList<>();
+        ArrayList<Livro> livrosdisponiveis = new ArrayList<>();
 
         //criação de dados
         criaLeitores(leitores);
-        criaLivros(livros);
+        criaLivros(livrosdisponiveis);
 
 
         //lista todos os dados disponiveis
         System.out.println("Livros disponiveis:");
-        Livro.listaLivrosDisponiveis(livros);
+        Livro.listaLivrosDisponiveis(livrosdisponiveis);
         System.out.println("\nLeitores disponiveis:");
         Leitor.listaLeitores(leitores);
 
@@ -181,19 +205,31 @@ public class TrabalhoTres {
 
 
         //cria requesições:
-        Requesicao r = livros.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
-        Requesicao r1 = livros.get(1).requesitaLivro(leitores.get(0), now, nowdev);
-        Requesicao r2 =  livros.get(0).requesitaLivro(leitores.get(1), now, nowdev);
+        Requesicao r = livrosdisponiveis.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
+        Requesicao r1 = livrosdisponiveis.get(1).requesitaLivro(leitores.get(0), now, nowdev);
+        Requesicao r2 =  livrosdisponiveis.get(0).requesitaLivro(leitores.get(1), now, nowdev);
 
         //adiciona às requesições
-        listareqs.adicionareq(r);
-        listareqs.adicionareq(r1);
-        listareqs.adicionareq(r2);
+        listareqs.adicionareq(r,livrosdisponiveis);
+        listareqs.adicionareq(r1,livrosdisponiveis);
+        listareqs.adicionareq(r2, livrosdisponiveis);
 
+        System.out.println("---------------");
         //lista todas as requisições:
         listareqs.imprimeReqs();
 
         //lista todas as requisições com base numa data dada.
         listareqs.listaRequisitados(now);
+
+        //verfica-se que já não há os mesmos livros disponiveis
+        Livro.listaLivrosDisponiveis(livrosdisponiveis);
+
+        System.out.println("---------------");
+
+        //retorno o livro
+        listareqs.levantaLivro(r2, livrosdisponiveis);
+
+        //agora já está disponivel
+        Livro.listaLivrosDisponiveis(livrosdisponiveis);
     }
 }
