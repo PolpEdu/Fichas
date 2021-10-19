@@ -1,6 +1,7 @@
 package Trabalho_tres;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 class Livro {
@@ -39,6 +40,7 @@ class Leitor {
     }
 
     public static void listaLeitores(ArrayList<Leitor> leitores) { //getLivros
+        System.out.println("\nLeitores disponiveis:");
         for (Leitor i : leitores) {
             System.out.println(i);
         }
@@ -86,6 +88,19 @@ class Data {
         return dataDevolucao();
     }
 
+    public static Data pedeData(Scanner stdin){
+        int dias, mes ,ano;
+        System.out.print("Dia: ");
+        dias = stdin.nextInt();
+
+        System.out.print("Mes: ");
+        mes = stdin.nextInt();
+
+        System.out.println("Ano:");
+        ano = stdin.nextInt();
+        return new Data(dias,mes,ano);
+    }
+
 }
 
 
@@ -96,7 +111,6 @@ class Requesicoes {
     public Requesicoes() {
         reqs = new ArrayList<>();
     }
-
 
     public void imprimeReqs() {
         for (Requesicao i : reqs) {
@@ -110,7 +124,6 @@ class Requesicoes {
         //ja nao é disponivel
         livrosdisponiveis.remove(r.getLivro());
     }
-
 
     public void listaRequisitados(Data d) {
         System.out.print("\n---------------------\nLista de datas de livros requesitados em "+d);
@@ -128,8 +141,51 @@ class Requesicoes {
             reqs.remove(r);
             System.out.println("Levantei o livro "+r.getLivro()+"\n");
 
-        };
+        }
         livrosdisponiveis.add(r.getLivro());
+    }
+
+    public Requesicao pedeRequesicao(Scanner stdin){
+        int i = 1;
+        for(Requesicao r: this.reqs){
+            System.out.println(i+". Requesicao: "+r);
+            i++;
+        }
+        int escolher;
+        do  {
+            escolher = stdin.nextInt();
+        } while (!(escolher>0 &&escolher<=i));
+        return this.reqs.get(escolher);
+    }
+
+    public void criaReq(Scanner stdin, ArrayList<Livro> ls, ArrayList<Leitor> leitors){
+        int i = 1;
+        for(Livro l: ls){
+            System.out.println(i+". Livro: "+l);
+            i++;
+        }
+        int escolherliv;
+        do  {
+            escolherliv = stdin.nextInt();
+        } while (!(escolherliv>0 &&escolherliv<=i));
+
+
+        int j = 1;
+        for(Leitor l: leitors){
+            System.out.println(i+". Leitor: "+l);
+            j++;
+        }
+        int escolherleit;
+        do  {
+            escolherleit = stdin.nextInt();
+        } while (!(escolherleit>0 &&escolherleit<=j));
+
+        Data datreq = Data.pedeData(stdin);
+        Data datadev = datreq.getDataDev();
+
+
+        Requesicao r = new Requesicao(leitors.get(j),ls.get(i), datreq, datadev);
+        reqs.add(r);
     }
 }
 
@@ -147,9 +203,6 @@ class Requesicao {
         this.datadevolucao = dtdev;
         this.datarequesicao = dtreq;
     }
-
-
-
 
     public String toString(){return PRINTRequesicao();}
 
@@ -188,21 +241,55 @@ public class TrabalhoTres {
         livros.add(l5);
     }
 
+    private static Leitor criaLeitorInput(ArrayList<Leitor> leitores, Scanner stdin) {
+        String nome =  "", nr = "";
+        long nrLONG;
+
+        System.out.print("Nome: ");
+        nome = stdin.nextLine();
+
+        System.out.print("Numero: ");
+        nr = stdin.nextLine();
+
+        Leitor leit = null;
+        try {
+            nrLONG = Long.parseLong(nr);
+            leit = new Leitor(nome,nrLONG);
+            leitores.add(leit);
+            System.out.print(leit);
+
+
+        }catch (Exception e) {
+            System.out.println("Número de estudante invalido. Erro: "+e);
+        }
+        return leit;
+    }
+    private static Livro criaLivroInput(ArrayList<Livro> livros,Scanner stdin) {
+        String t =  "", autor = "";
+        t = stdin.nextLine(); //para fazer o paragrafo e esperar
+
+        System.out.print("Título: ");
+        t = stdin.nextLine();
+
+        System.out.print("Autor: ");
+        autor = stdin.nextLine();
+
+        Livro l = new Livro(t,autor);
+        livros.add(l);
+        System.out.print(l);
+        return l;
+    }
+
+
     public static void main(String[] args) {
         Requesicoes listareqs = new Requesicoes();
         ArrayList<Leitor> leitores = new ArrayList<>(); //crio uma lista de leitores.
         ArrayList<Livro> livrosdisponiveis = new ArrayList<>();
 
-        //criação de dados
+        //criação de dados iniciais
         criaLeitores(leitores);
         criaLivros(livrosdisponiveis);
 
-
-        //lista todos os dados disponiveis
-        System.out.println("Livros disponiveis:");
-        Livro.listaLivrosDisponiveis(livrosdisponiveis);
-        System.out.println("\nLeitores disponiveis:");
-        Leitor.listaLeitores(leitores);
 
 
         //exemplo de datas e as suas devoluções
@@ -216,35 +303,69 @@ public class TrabalhoTres {
         Data antesnowdev = antesnow.getDataDev();
 
 
-        //cria requesições:
+        //exemplos de criação de requesições:
         Requesicao r = livrosdisponiveis.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
         Requesicao r1 = livrosdisponiveis.get(1).requesitaLivro(leitores.get(0), now, nowdev);
         Requesicao r2 =  livrosdisponiveis.get(0).requesitaLivro(leitores.get(1), now, nowdev);
         Requesicao r3 =  livrosdisponiveis.get(4).requesitaLivro(leitores.get(1), antesnow, antesnowdev);
 
 
-        //adiciona às requesições
+        //adiciona às requesições algumas requesicoes posteriores.
         listareqs.adicionareq(r,livrosdisponiveis);
         listareqs.adicionareq(r1,livrosdisponiveis);
-        listareqs.adicionareq(r2, livrosdisponiveis);
-        listareqs.adicionareq(r3,livrosdisponiveis);
 
-        System.out.println("---------------");
-        //lista todas as requisições:
-        listareqs.imprimeReqs();
 
-        //lista todas as requisições com base numa data dada.
-        listareqs.listaRequisitados(now);
+        int escolha;
+        Scanner stdin = new Scanner(System.in);
+        do {// Menu
+            System.out.println("\n\n1 - Adicionar livro");
+            System.out.println("2 - Adicionar Leitor");
+            System.out.println("3 - Lista livros");
+            System.out.println("4 - Lista leitores");
+            System.out.println("5 - Lista Reposicoes");
+            System.out.println("6 - Cria uma reposição");
+            System.out.println("7 - Lista livros disponiveis com base numa data pedida");
+            System.out.println("8 - Levanta Livro");
 
-        //verfica-se que já não há os mesmos livros disponiveis
-        Livro.listaLivrosDisponiveis(livrosdisponiveis);
 
-        System.out.println("---------------");
-
-        //retorno o livro
-        listareqs.levantaLivro(r2, livrosdisponiveis);
-
-        //agora já está disponivel
-        Livro.listaLivrosDisponiveis(livrosdisponiveis);
+            System.out.println("0 - Sair");
+            escolha = stdin.nextInt();
+            switch (escolha) {
+                case 1:
+                    criaLivroInput(livrosdisponiveis,stdin);
+                    break;
+                case 2:
+                    stdin.nextLine(); //para saltar a proxima linha
+                    criaLeitorInput(leitores,stdin);
+                    break;
+                case 3:
+                    Livro.listaLivrosDisponiveis(livrosdisponiveis);
+                    break;
+                case 4:
+                    Leitor.listaLeitores(leitores);
+                    break;
+                case 5:
+                    listareqs.imprimeReqs();
+                    break;
+                case 6:
+                    listareqs.criaReq(stdin,livrosdisponiveis,leitores);
+                    break;
+                case 7:
+                    Data ped = Data.pedeData(stdin);
+                    //lista todas as requisições com base numa data dada.
+                    listareqs.listaRequisitados(ped);
+                    break;
+                case 8:
+                    Requesicao reqped = listareqs.pedeRequesicao(stdin);
+                    listareqs.levantaLivro(reqped, livrosdisponiveis);
+                    break;
+                default:
+                    System.out.println("Input invalido.");
+                    break;
+                case 0:
+                    System.exit(0);
+            }
+        } while (escolha != 0);
+        stdin.close();
     }
 }

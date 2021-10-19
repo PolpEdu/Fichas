@@ -1,15 +1,8 @@
 package overridingClasses;
 
-class Conhecimento {
-    private String Portugues;
-    private long Matematica;
-    private byte informatica;
-}
-
 
 public class Pessoas {
     private String nome;
-    private  Conhecimento c;
 
     public String comunica(){
         return this.nome + "a comunicar.";
@@ -17,6 +10,13 @@ public class Pessoas {
 
     public String missao(){
         return "Sou uma pessoa normal...";
+    }
+    public String getnome(){
+        return this.nome;
+    }
+
+    public String toString() {
+        return "Sou uma pessoa normal com o nome: "+ nome ;
     }
 }
 
@@ -33,6 +33,12 @@ class Alunos extends Pessoas {
         return aprende();
     }
 
+    @Override
+    public String toString() {
+        return "O "+ super.getnome() ;
+    }
+
+
 }
 
 class Docentes extends Pessoas {
@@ -47,7 +53,8 @@ class Docentes extends Pessoas {
         return ensina();
     }
 
-    private String textDOC() {
-        return "O ";
+    @Override
+    public String toString() {
+        return "O "+super.getnome()+ "";
     }
 }
