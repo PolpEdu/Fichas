@@ -71,16 +71,19 @@ class Data {
     }
 
     public boolean comparadatas(Data datagiven){
-        //se for no mes a seguir com os dias menores ou no mesmo mes
-        if(this.mes == datagiven.mes) return true;
-        if((this.mes == (datagiven.mes+1)%12)) {
-            if(this.dia <= datagiven.dia) return true;
-        }
-            return false;
+        //! NOTA: AS DATAS DE DEVOLUÇÃO SÃO UM MES DEPOIS.
+
+        // verfica se é do mes a seguir do proximo ano || verficia se é do mesmo mes || verfica se no caso de ser o mes a seguir, tem dias menores.
+        return ((this.ano == datagiven.ano-1) &&(this.mes == 12) && (datagiven.mes==1))
+                || (this.mes == datagiven.mes) && (this.ano == datagiven.ano) ||
+                (this.mes == (datagiven.mes+1)%13) && (this.dia <= datagiven.dia) && (this.ano == datagiven.ano);
     }
 
     private Data dataDevolucao() {
         //logica do calculo da dataDevolução:
+        //adicionar 1 ao ano no caso do mes ser 12
+        if(this.mes==12) return new Data(this.dia, (this.mes + 1) % 12, this.ano+1); //A data de devolucao é dada por o mes atual mais um.
+
         return new Data(this.dia, (this.mes + 1) % 12, this.ano); //A data de devolucao é dada por o mes atual mais um.
     }
 
@@ -90,13 +93,15 @@ class Data {
 
     public static Data pedeData(Scanner stdin){
         int dias, mes ,ano;
+        System.out.println("Seleciona a tua data: ");
+
         System.out.print("Dia: ");
         dias = stdin.nextInt();
 
         System.out.print("Mes: ");
         mes = stdin.nextInt();
 
-        System.out.println("Ano:");
+        System.out.print("Ano:");
         ano = stdin.nextInt();
         return new Data(dias,mes,ano);
     }
@@ -136,6 +141,7 @@ class Requesicoes {
         System.out.println();
     }
 
+    //esta funcao basicamente volta a por o livro nos livros disponiveis e remove a requesicao feita.
     public void levantaLivro(Requesicao r,ArrayList<Livro> livrosdisponiveis) {
         if(reqs.contains(r))  {
             reqs.remove(r);
@@ -148,44 +154,54 @@ class Requesicoes {
     public Requesicao pedeRequesicao(Scanner stdin){
         int i = 1;
         for(Requesicao r: this.reqs){
-            System.out.println(i+". Requesicao: "+r);
+            System.out.println(i+"- Requesicao:\n"+r);
             i++;
         }
         int escolher;
         do  {
             escolher = stdin.nextInt();
         } while (!(escolher>0 &&escolher<=i));
-        return this.reqs.get(escolher);
+
+        // selecionei a requesicao vou dar-lhe return
+        return this.reqs.get(escolher-1);
     }
 
     public void criaReq(Scanner stdin, ArrayList<Livro> ls, ArrayList<Leitor> leitors){
-        int i = 1;
+        int i = 1, escolherliv,j = 1, escolherleit;
+
+        if(ls.isEmpty() || leitors.isEmpty()) {
+            System.out.println("Não é possivel fazer requesições....");
+            return;
+        }
+        System.out.println("Seleciona o número do Livro: ");
         for(Livro l: ls){
-            System.out.println(i+". Livro: "+l);
+            System.out.println(i+" - "+l);
             i++;
         }
-        int escolherliv;
         do  {
             escolherliv = stdin.nextInt();
         } while (!(escolherliv>0 &&escolherliv<=i));
 
 
-        int j = 1;
+        System.out.println("Seleciona o número do Leitor: ");
+
         for(Leitor l: leitors){
-            System.out.println(i+". Leitor: "+l);
+            System.out.println(j+" - "+l);
             j++;
         }
-        int escolherleit;
+
         do  {
             escolherleit = stdin.nextInt();
-        } while (!(escolherleit>0 &&escolherleit<=j));
+        } while (!(escolherleit>0 && escolherleit<=j));
 
         Data datreq = Data.pedeData(stdin);
         Data datadev = datreq.getDataDev();
 
 
-        Requesicao r = new Requesicao(leitors.get(j),ls.get(i), datreq, datadev);
-        reqs.add(r);
+        //selececionei os leitores/livros/datareq adiciono as requesicoes.
+        Requesicao r = ls.get(escolherliv-1).requesitaLivro(leitors.get(escolherleit-1),datreq,datadev);
+        this.adicionareq(r,ls);
+        System.out.println("Requesicao criada:\n"+r);
     }
 }
 
@@ -242,7 +258,7 @@ public class TrabalhoTres {
     }
 
     private static Leitor criaLeitorInput(ArrayList<Leitor> leitores, Scanner stdin) {
-        String nome =  "", nr = "";
+        String nome, nr;
         long nrLONG;
 
         System.out.print("Nome: ");
@@ -264,8 +280,9 @@ public class TrabalhoTres {
         }
         return leit;
     }
+
     private static Livro criaLivroInput(ArrayList<Livro> livros,Scanner stdin) {
-        String t =  "", autor = "";
+        String t, autor;
         t = stdin.nextLine(); //para fazer o paragrafo e esperar
 
         System.out.print("Título: ");
@@ -299,15 +316,15 @@ public class TrabalhoTres {
         Data now = new Data(14, 12, 2021);
         Data nowdev = now.getDataDev();
 
-        Data antesnow = new Data(12, 1, 2021);
-        Data antesnowdev = antesnow.getDataDev();
+        /*Data antesnow = new Data(12, 1, 2021);
+        Data antesnowdev = antesnow.getDataDev();*/
 
 
         //exemplos de criação de requesições:
         Requesicao r = livrosdisponiveis.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
         Requesicao r1 = livrosdisponiveis.get(1).requesitaLivro(leitores.get(0), now, nowdev);
-        Requesicao r2 =  livrosdisponiveis.get(0).requesitaLivro(leitores.get(1), now, nowdev);
-        Requesicao r3 =  livrosdisponiveis.get(4).requesitaLivro(leitores.get(1), antesnow, antesnowdev);
+        // Requesicao r2 =  livrosdisponiveis.get(0).requesitaLivro(leitores.get(1), now, nowdev);
+        // Requesicao r3 =  livrosdisponiveis.get(4).requesitaLivro(leitores.get(1), antesnow, antesnowdev);
 
 
         //adiciona às requesições algumas requesicoes posteriores.
@@ -318,17 +335,16 @@ public class TrabalhoTres {
         int escolha;
         Scanner stdin = new Scanner(System.in);
         do {// Menu
-            System.out.println("\n\n1 - Adicionar livro");
+            System.out.println("\n----------------------------\n1 - Adicionar livro");
             System.out.println("2 - Adicionar Leitor");
-            System.out.println("3 - Lista livros");
+            System.out.println("3 - Lista livros disponiveis para requesicao");
             System.out.println("4 - Lista leitores");
             System.out.println("5 - Lista Reposicoes");
             System.out.println("6 - Cria uma reposição");
-            System.out.println("7 - Lista livros disponiveis com base numa data pedida");
+            System.out.println("7 - Lista livros requesitados com base numa data pedida");
             System.out.println("8 - Levanta Livro");
 
-
-            System.out.println("0 - Sair");
+            System.out.println("0 - Sair\n----------------------------");
             escolha = stdin.nextInt();
             switch (escolha) {
                 case 1:
