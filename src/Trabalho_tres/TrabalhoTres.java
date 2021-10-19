@@ -68,6 +68,14 @@ class Data {
         return PRINTData();
     }
 
+    public boolean comparadatas(Data datagiven){
+        //se for no mes a seguir com os dias menores ou no mesmo mes
+        if(this.mes == datagiven.mes) return true;
+        if((this.mes == (datagiven.mes+1)%12)) {
+            if(this.dia <= datagiven.dia) return true;
+        }
+            return false;
+    }
 
     private Data dataDevolucao() {
         //logica do calculo da dataDevolução:
@@ -105,9 +113,9 @@ class Requesicoes {
 
 
     public void listaRequisitados(Data d) {
-        System.out.print("\n---------------------\nLista de datas correspondidas a "+d);
+        System.out.print("\n---------------------\nLista de datas de livros requesitados em "+d);
         for (Requesicao req : reqs) {
-            if(req.comparadatas(d)) {
+            if(req.getDatarequesicao().comparadatas(d)) {
                 System.out.println("\n");
                 System.out.println(req);
             }
@@ -141,9 +149,7 @@ class Requesicao {
     }
 
 
-    public boolean comparadatas(Data datagiven){
-        return this.datarequesicao == datagiven;
-    }
+
 
     public String toString(){return PRINTRequesicao();}
 
@@ -151,6 +157,7 @@ class Requesicao {
 
     private String PRINTRequesicao(){return leitor+"\n"+livro+"\n"+"Data de Requesição: "+ datarequesicao+"\n"+"Data de Devolução: "+datadevolucao;}
 
+    public Data getDatarequesicao(){return this.datarequesicao;}
 
 }
 
@@ -172,11 +179,13 @@ public class TrabalhoTres {
         Livro l2 = new Livro("O Ano Da Morte De Ricardo Reis", "José Saramago");
         Livro l3 = new Livro("Sherlock Holmes: A Study in Scarlet", "Arthur Conan Doyle");
         Livro l4 = new Livro("Engenharia de Janelas", "João Barata");
+        Livro l5 = new Livro("Os Lusiadas", "Luis Vaz de Camões");
 
         livros.add(l1);
         livros.add(l2);
         livros.add(l3);
         livros.add(l4);
+        livros.add(l5);
     }
 
     public static void main(String[] args) {
@@ -203,16 +212,22 @@ public class TrabalhoTres {
         Data now = new Data(14, 12, 2021);
         Data nowdev = now.getDataDev();
 
+        Data antesnow = new Data(12, 1, 2021);
+        Data antesnowdev = antesnow.getDataDev();
+
 
         //cria requesições:
         Requesicao r = livrosdisponiveis.get(2).requesitaLivro(leitores.get(2),d1, d1dev);
         Requesicao r1 = livrosdisponiveis.get(1).requesitaLivro(leitores.get(0), now, nowdev);
         Requesicao r2 =  livrosdisponiveis.get(0).requesitaLivro(leitores.get(1), now, nowdev);
+        Requesicao r3 =  livrosdisponiveis.get(4).requesitaLivro(leitores.get(1), antesnow, antesnowdev);
+
 
         //adiciona às requesições
         listareqs.adicionareq(r,livrosdisponiveis);
         listareqs.adicionareq(r1,livrosdisponiveis);
         listareqs.adicionareq(r2, livrosdisponiveis);
+        listareqs.adicionareq(r3,livrosdisponiveis);
 
         System.out.println("---------------");
         //lista todas as requisições:
