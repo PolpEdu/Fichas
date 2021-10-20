@@ -394,7 +394,7 @@ public class TrabalhoTres {
             System.out.println("2 - Adicionar Leitor");
             System.out.println("3 - Lista livros disponiveis para requesicao");
             System.out.println("4 - Lista leitores");
-            System.out.println("5 - Lista Reposicoes");
+            System.out.println("5 - Lista Requesicoes");
             System.out.println("6 - Cria uma reposição");
             System.out.println("7 - Lista livros requesitados com base numa data pedida");
             System.out.println("8 - Levanta Livro");
