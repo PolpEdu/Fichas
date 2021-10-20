@@ -41,6 +41,10 @@ class Leitor {
 class Leitores {
     private ArrayList<Leitor> leitores;
 
+    public Leitores() {
+        leitores = new ArrayList<>();
+    }
+
     public void listaleitores() { //getLivros
         for (Leitor i : this.leitores) {
             System.out.println(i);
@@ -71,6 +75,12 @@ class Leitores {
 
 class Livros {
     private ArrayList<Livro> livros;
+
+
+    public Livros() {
+        livros = new ArrayList<>();
+    }
+
 
     public void listaLivrosDisponiveis() { //getLivros
         for (Livro i : this.livros) {
