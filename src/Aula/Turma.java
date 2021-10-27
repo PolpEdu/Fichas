@@ -69,6 +69,8 @@ class GereTurma {
             System.out.println("1 - Adicionar estudante");
             System.out.println("2 - Ordenar estudantes");
             System.out.println("3 - Lista de estudantes");
+            System.out.println("4 - Testa o quão accurate é o 50% do java");
+
             System.out.println("0 - Sair");
             escolha = stdin.nextInt();
             switch (escolha) {
@@ -80,6 +82,30 @@ class GereTurma {
                     break;
                 case 3:
                     t.imprimeTurma();
+                    break;
+
+                case 4:
+                    Random r = new Random();
+                    int um = 0;
+                    int dois = 0;
+
+                    for (int i = 0; i < 1000000; i++) {
+                        int s = r.nextInt(2)+1;
+                        //System.out.println(s);
+                        if(s ==1) {
+                            um++;
+                        }
+                        else{
+                            dois++;
+                        }
+                    }
+                    int total = um+dois;
+                    double dev = (double) (um / dois) -1;
+
+                    double pum =  (double) um/total;
+                    double pdois =(double) dois/total;
+                    System.out.println("Temos "+um + " uns e "+dois+ " dois. Total:"+total+". Deviation: "+ dev);
+                    System.out.println("1%: "+ pum+ "  2%: "+pdois);
                     break;
                 case 0:
                     System.exit(0);
