@@ -24,7 +24,7 @@ public class Main {
 
     public static int[] subTabela(int[] tabela) {
         int[] subtabela,tabelaord;
-        int indexfinal = tabela.length-1, indexinicial = -1;
+        int indexfinal = tabela.length-1, indexinicial = 0;
 
 
         //fazer uma tabela nova ordenada
@@ -32,14 +32,6 @@ public class Main {
         //ordena-la
         Arrays.sort(tabelaord);
 
-        //ver se a tabela é igual à ordenada
-        boolean tabelaordenada = tabela == tabelaord;
-
-        //se for:
-        if (tabelaordenada) { //não quero fazer mais operações. A tabela encontra-se ordernada.
-            System.out.println("A tabela encontra-se ordenada. Não existe Sub-tabela.");
-            return new int[]{};
-        }
 
         //System.out.println( Arrays.toString(tabelaord));
 
@@ -62,6 +54,8 @@ public class Main {
         // ? System.out.printf("Nr de valores: %d, Começo(indexinicial): %d, Fim(indexfinal): %d\n", indexfinal - indexinicial + 1, indexinicial, indexfinal);
 
         //cria uma subtabela com o tamanho necessário e os dois indexes da tabela principal
+        System.out.println(indexfinal);
+        System.out.println(indexinicial);
         subtabela = new int[indexfinal - indexinicial + 1];
         System.arraycopy(tabela, indexinicial, subtabela, 0, indexfinal - indexinicial + 1); //copiar para a nova tabela os elementos com os indexes.
 

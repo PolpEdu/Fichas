@@ -75,7 +75,7 @@ class Torpedeiro extends BarcosDaMarinha {
 
     @Override
     public String toString() {
-        return "Torpedeiro" + ", Numero de lancadores: " + nrlancadores+super.toString();
+        return "Torpedeiro" + ", Numero de lancadores: " + this.nrlancadores +super.toString();
     }
 }
 
@@ -107,8 +107,7 @@ class Barcos {
     }
 
     public void addBarco(Barco b){
-        if(marina != null) marina.add(b);
-        else System.out.println("A marina ainda não foi inicializada. Não foi atracado nenhum barco.");
+        marina.add(b);
     }
 
     @Override
@@ -122,7 +121,7 @@ class Barcos {
 }
 
 public class TrabalhoQuatro {
-    public static Barco criabarco(int s, Random r) {
+    public Barco criabarco(int s, Random r) {
         
         Barco b;
         String[] dimens = {"pequenos","medios","grandes"};
@@ -138,11 +137,11 @@ public class TrabalhoQuatro {
 
         int tam = 6; // tamanho da matricula
         String matri = "";
-        for (int i = 0; i < tam; i++) {
+        for (int i = 0; i < tam; i++) { //generar matricula
             String sel = Integer.toString(r.nextInt(10)); // random a number to a 0 - 9
             matri = matri + sel;
         }
-        int ma = Integer.parseInt(matri);
+        int ma = Integer.parseInt(matri); //passa-la ara inteiro
 
 
         int lanc = r.nextInt(6)+1; //gera um nr de 1 a 6
@@ -170,17 +169,17 @@ public class TrabalhoQuatro {
 
 
     public static void main(String[] args) {
-        Barcos bs = new Barcos();
         Random r = new Random();
-
+        Barcos bs = new Barcos();
+        TrabalhoQuatro m = new TrabalhoQuatro();
 
         int n = 10;   //nr de barcos a criar
-        int selecao;  //nr ao calhas de 1 a 4
+        int selecao;  //nr ao acaso de 1 a 4
 
 
         for (int i = 0; i < n; i++) {
             selecao = r.nextInt(4)+1; //generar numeros de 1 a 4
-            Barco b = criabarco(selecao,r);
+            Barco b = m.criabarco(selecao,r);
             bs.addBarco(b);
         }
         System.out.println(bs);
